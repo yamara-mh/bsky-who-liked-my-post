@@ -51,7 +51,7 @@ jobs:
           >wrangler.toml
           echo "name = \"$WORKER_NAME\"" >>wrangler.toml
           echo compatibility_date = \"2024-09-23\" >>wrangler.toml
-          echo compatibility_flags = \[ \"hybrid-nodejs_compat\" \] >>wrangler.toml
+          echo compatibility_flags = \[ \"nodejs_compat\" \] >>wrangler.toml
           echo \[ build.upload \] >>wrangler.toml
           echo external = \[ \"linq-to-typescript\" \] >>wrangler.toml
           echo \[\[ d1_databases \]\] >>wrangler.toml
@@ -69,7 +69,7 @@ jobs:
             BLUESKY_HANDLE
             BLUESKY_APP_PASSWORD
           command: |
-            deploy src/index.ts
+            deploy src/server.ts
       - name: Cleanup wrangler.toml
         run: |
           rm -f wrangler.toml
