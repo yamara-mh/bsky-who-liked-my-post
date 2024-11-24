@@ -35,9 +35,6 @@ jobs:
     name: Deploy Cloudflare Worker
     steps:
       - uses: actions/checkout@v4
-      - name: Render Config
-        run: |
-          python render-configs.py
       - name: Populate wrangler.toml
         run: |
           TARGET=${{ github.event.inputs.target }}
