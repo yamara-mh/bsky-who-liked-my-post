@@ -47,7 +47,6 @@ jobs:
       - uses: actions/setup-node@v4
       - name: Publish Feed Generators
         run: |
-          cd feed-generator/
           npm install
           env | grep -E 'FEEDGEN'
           yarn publishFeedGenerators
