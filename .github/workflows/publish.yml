@@ -46,9 +46,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
       - name: Publish Feed Generators
+        env :
+          TARGET: ${{ github.event.inputs.target }}
         run: |
           npm install
-          env |
-            grep -E 'FEEDGEN'
-            TARGET: ${{ github.event.inputs.target }}
+          env | grep -E 'FEEDGEN'
           yarn run publishFeed
