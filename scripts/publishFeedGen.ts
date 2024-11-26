@@ -12,15 +12,21 @@ const run = async () => {
   }
 
   const args = process.argv.slice(2);
-  const isDevelop = (args[0] as string) === "develop";
+  const isDevelop = Boolean((args[0] as string) === "develop");
 
   const handle = process.env.FEEDGEN_SERVICE_DID;
   const password = process.env.BLUESKY_APP_PASSWORD;
   const service = 'https://bsky.social';
+
+  console.log("recordName");
   const recordName = isDevelop ? "t" : "who-liked-me";
+  console.log("displayName");
   const displayName = isDevelop ? "テスト" : "Who Liked Me";
+  console.log("description");
   const description = isDevelop ? "説明文" : "自身の投稿にいいねした人の投稿を表示します";
+  console.log("avatar");
   const avatar = isDevelop ? undefined : undefined;
+  console.log("----");
 
   const feedGenDid =
     process.env.FEEDGEN_SERVICE_DID ?? `did:web:${process.env.FEEDGEN_HOSTNAME}`
