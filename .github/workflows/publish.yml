@@ -49,4 +49,4 @@ jobs:
         run: |
           npm install
           env | grep -E 'FEEDGEN'
-          yarn publishFeed
+          yarn run publishFeed
