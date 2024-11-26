@@ -48,5 +48,7 @@ jobs:
       - name: Publish Feed Generators
         run: |
           npm install
-          env | grep -E 'FEEDGEN'
+          env :
+            grep -E 'FEEDGEN'
+            TARGET: ${{ github.event.inputs.target }}
           yarn run publishFeed
