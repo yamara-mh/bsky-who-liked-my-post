@@ -12,7 +12,7 @@ const run = async () => {
   }
 
   const args = process.argv.slice(2);
-  const isDevelop = Boolean((args[0] as string) === "develop");
+  const isDevelop = (string: args[0]) === "develop";
 
   const handle = process.env.FEEDGEN_SERVICE_DID;
   const password = process.env.BLUESKY_APP_PASSWORD;
