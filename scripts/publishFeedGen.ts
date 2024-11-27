@@ -8,6 +8,8 @@ import { ids } from '../src/lexicon/lexicons';
 const run = async () => {
   dotenv.config();
 
+  console.log(process.env.FEEDGEN_SERVICE_DID as string);
+  
   if (!process.env.FEEDGEN_SERVICE_DID) {
     throw new Error('Please provide a hostname in the .env file');
   }
