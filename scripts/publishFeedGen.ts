@@ -19,15 +19,18 @@ const run = async () => {
   const password = process.env.BLUESKY_APP_PASSWORD;
   const service = 'https://bsky.social';
 
-  console.log("recordName");
+  console.log(`handle : ${ handle }`);
+  console.log(process.env.vars.FEEDGEN_SERVICE_DID);
+  
+
   const recordName = isDevelop ? "t" : "who-liked-me";
-  console.log("displayName");
+  console.log(`recordName : ${ recordName }`);
   const displayName = isDevelop ? "テスト" : "Who Liked Me";
-  console.log("description");
+  console.log(`displayName : ${ displayName }`);
   const description = isDevelop ? "説明文" : "自身の投稿にいいねした人の投稿を表示します";
-  console.log("avatar");
+  console.log(`description : ${ description }`);
   const avatar = isDevelop ? "test.png" : "test.png";
-  console.log("----");
+  console.log(`avatar : ${ avatar }`);
 
   const feedGenDid =
     process.env.FEEDGEN_SERVICE_DID ?? `did:web:${process.env.FEEDGEN_HOSTNAME}`;
@@ -37,8 +40,8 @@ const run = async () => {
 
   let avatarRef: BlobRef | undefined;
   if (avatar) {
-    const img = await fs.readFile(path.join('..', avatar));
-    const blobRes = await agent.api.com.atproto.repo.uploadBlob(img, { contentType: 'image/png' });
+    const img = await fs.readFile(path.join('..', ));
+    const blobRes = await agent.api.com.atproto.repo.uploadBlob(img, { 'image/png' });
     avatarRef = blobRes.data.blob;
   }
 
