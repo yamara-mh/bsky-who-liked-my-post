@@ -15,25 +15,16 @@ const run = async () => {
   const args: string[] = process.argv.slice(2);
   const isDevelop = args[0] === "develop";
 
-  const handle = process.env.FEEDGEN_SERVICE_DID;
-  const password = process.env.BLUESKY_APP_PASSWORD;
+  const feedGenDid = process.env.FEEDGEN_SERVICE_DID;
   const service = 'https://bsky.social';
 
-  console.log(`handle : ${ handle }`);
-  console.log(process.env.vars.FEEDGEN_SERVICE_DID);
-  
-
   const recordName = isDevelop ? "t" : "who-liked-me";
-  console.log(`recordName : ${ recordName }`);
   const displayName = isDevelop ? "テスト" : "Who Liked Me";
-  console.log(`displayName : ${ displayName }`);
   const description = isDevelop ? "説明文" : "自身の投稿にいいねした人の投稿を表示します";
-  console.log(`description : ${ description }`);
   const avatar = isDevelop ? "test.png" : "test.png";
-  console.log(`avatar : ${ avatar }`);
 
-  const feedGenDid = process.env.FEEDGEN_SERVICE_DID;
-
+  const handle = process.env.FEEDGEN_SERVICE_DID;
+  const password = process.env.BLUESKY_APP_PASSWORD;
   const agent = new AtpAgent({ service: service ? service : 'https://bsky.social' });
   await agent.login({ identifier: handle, password });
 
