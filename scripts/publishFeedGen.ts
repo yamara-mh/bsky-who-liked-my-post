@@ -8,6 +8,7 @@ import { ids } from '../src/lexicon/lexicons';
 const run = async () => {
   dotenv.config();
 
+  console.log("log");
   console.log(process.env.FEEDGEN_SERVICE_DID as string);
   
   if (!process.env.FEEDGEN_SERVICE_DID) {
@@ -25,7 +26,7 @@ const run = async () => {
   const description = isDevelop ? "説明文" : "自身の投稿にいいねした人の投稿を表示します";
   const avatar = isDevelop ? "test.png" : "test.png";
 
-  const handle = process.env.FEEDGEN_SERVICE_DID as string;
+  const handle = process.env.BLUESKY_HANDLE as string;
   const password = process.env.BLUESKY_APP_PASSWORD as string;
   const agent = new AtpAgent({ service: service ? service : 'https://bsky.social' });
   await agent.login({ identifier: handle, password });
