@@ -41,8 +41,6 @@ jobs:
           TARGET: ${{ github.event.inputs.target }}
           FEEDGEN_SERVICE_DID: ${{ github.env.vars.FEEDGEN_SERVICE_DID }}
           BLUESKY_APP_PASSWORD: ${{ github.env.secrets.BLUESKY_APP_PASSWORD }}
-
         run: |
-          cd scripts/
           npm install
           yarn run publishFeed
