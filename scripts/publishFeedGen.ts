@@ -19,7 +19,6 @@ const run = async () => {
   const isDevelop = args[0] === "develop";
 
   const feedGenDid = process.env.FEEDGEN_SERVICE_DID as string;
-  const service = 'https://bsky.social';
 
   const recordName = isDevelop ? "t" : "who-liked-me";
   const displayName = isDevelop ? "テスト" : "Who Liked Me";
@@ -28,8 +27,8 @@ const run = async () => {
 
   const handle = process.env.BLUESKY_HANDLE as string;
   const password = process.env.BLUESKY_APP_PASSWORD as string;
-  const agent = new AtpAgent({ service: service ? service : 'https://bsky.social' });
-  await agent.login({ identifier: handle, password });
+  const agent = new AtpAgent({ service: 'https://bsky.social' })
+  await agent.login({ identifier: "did=pic:" + handle, password })
 
   let avatarRef: BlobRef | undefined;
   if (avatar) {
