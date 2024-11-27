@@ -28,7 +28,7 @@ const run = async () => {
   const handle = process.env.BLUESKY_HANDLE as string;
   const password = process.env.BLUESKY_APP_PASSWORD as string;
   const agent = new AtpAgent({ service: 'https://bsky.social' })
-  await agent.login({ identifier: "did=pic:" + handle, password })
+  await agent.login({ identifier: feedGenDid, password })
 
   let avatarRef: BlobRef | undefined;
   if (avatar) {
