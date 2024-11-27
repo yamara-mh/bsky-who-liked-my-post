@@ -43,8 +43,8 @@ jobs:
           export CLOUDFLARE_WORKERS_SUBDOMAIN="$(cat $tmp)"
           echo "FEEDGEN_HOSTNAME=$WORKER_NAME.${CLOUDFLARE_WORKERS_SUBDOMAIN}.workers.dev" >> "$GITHUB_ENV"
           
-          FEEDGEN_SERVICE_DID=${{ github.env.vars.FEEDGEN_SERVICE_DID }}}
-          BLUESKY_APP_PASSWORD=${{ github.env.secrets.BLUESKY_APP_PASSWORD }}}
+          echo "FEEDGEN_SERVICE_DID=${{ github.env.vars.FEEDGEN_SERVICE_DID }}}" >> "$GITHUB_ENV"
+          echo "BLUESKY_APP_PASSWORD=${{ github.env.secrets.BLUESKY_APP_PASSWORD }}}" >> "$GITHUB_ENV"
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
       - name: Publish Feed Generators
