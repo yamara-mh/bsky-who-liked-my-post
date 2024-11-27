@@ -10,6 +10,11 @@ on:
         options: 
         - develop
         - product
+        
+
+env:
+  CLOUDFLARE_WORKER_NAME: ${{ vars.CLOUDFLARE_WORKER_NAME }}
+  CLOUDFLARE_WORKER_NAME_DEV: ${{ vars.CLOUDFLARE_WORKER_NAME_DEV }}
 
 jobs:
   publish_feed_generators:
