@@ -11,18 +11,6 @@ on:
         - develop
         - product
 
-env:
-  FEEDGEN_SERVICE_DID: ${{ vars.FEEDGEN_SERVICE_DID }}
-  FEEDGEN_HOSTNAME: ${{ vars.FEEDGEN_HOSTNAME }}
-
-  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-  CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-  BLUESKY_HANDLE: ${{ vars.BLUESKY_HANDLE }}
-  BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
-
-  CLOUDFLARE_WORKER_NAME: ${{ vars.CLOUDFLARE_WORKER_NAME }}
-  CLOUDFLARE_WORKER_NAME_DEV: ${{ vars.CLOUDFLARE_WORKER_NAME_DEV }}
-
 jobs:
   publish_feed_generators:
     runs-on: ubuntu-latest
@@ -51,7 +39,10 @@ jobs:
       - name: Publish Feed Generators
         env :
           TARGET: ${{ github.event.inputs.target }}
+          FEEDGEN_SERVICE_DID: ${{ github.env.vars.FEEDGEN_SERVICE_DID }}
+          BLUESKY_APP_PASSWORD: ${{ github.env.secrets.BLUESKY_APP_PASSWORD }}
+
         run: |
+          cd scripts/
           npm install
-          env | grep -E 'FEEDGEN'
           yarn run publishFeed

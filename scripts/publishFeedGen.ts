@@ -8,7 +8,7 @@ import { ids } from '../src/lexicon/lexicons';
 const run = async () => {
   dotenv.config();
 
-  if (!process.env.FEEDGEN_SERVICE_DID && !process.env.FEEDGEN_HOSTNAME) {
+  if (!process.env.FEEDGEN_SERVICE_DID) {
     throw new Error('Please provide a hostname in the .env file');
   }
 
@@ -32,17 +32,26 @@ const run = async () => {
   const avatar = isDevelop ? "test.png" : "test.png";
   console.log(`avatar : ${ avatar }`);
 
-  const feedGenDid =
-    process.env.FEEDGEN_SERVICE_DID ?? `did:web:${process.env.FEEDGEN_HOSTNAME}`;
+  const feedGenDid = process.env.FEEDGEN_SERVICE_DID;
 
   const agent = new AtpAgent({ service: service ? service : 'https://bsky.social' });
   await agent.login({ identifier: handle, password });
 
   let avatarRef: BlobRef | undefined;
   if (avatar) {
-    const img = await fs.readFile(path.join('..', ));
-    const blobRes = await agent.api.com.atproto.repo.uploadBlob(img, { 'image/png' });
-    avatarRef = blobRes.data.blob;
+    let encoding: string
+    if (avatar.endsWith('png')) {
+      encoding = 'image/png'
+    } else if (avatar.endsWith('jpg') || avatar.endsWith('jpeg')) {
+      encoding = 'image/jpeg'
+    } else {
+      throw new Error('expected png or jpeg')
+    }
+    const img = await fs.readFile(path.join('..', avatar))
+    const blobRes = await agent.api.com.atproto.repo.uploadBlob(img, {
+      encoding,
+    })
+    avatarRef = blobRes.data.blob
   }
 
   await agent.api.com.atproto.repo.putRecord({
