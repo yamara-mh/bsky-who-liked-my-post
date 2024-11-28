@@ -7,10 +7,10 @@ import { ids } from '../src/lexicon/lexicons';
 
 const run = async () => {
   dotenv.config();
-  
+
+  console.log(`FEEDGEN_SERVICE_DID`);
   console.log(process.env.FEEDGEN_SERVICE_DID as string);
 
-  
   if (!process.env.FEEDGEN_SERVICE_DID) {
     throw new Error('Please provide a hostname in the .env file');
   }
@@ -29,7 +29,6 @@ const run = async () => {
   const password = process.env.BLUESKY_APP_PASSWORD as string;
   console.log(`handle`);
   console.log(handle);
-  console.log(password);
   
   const agent = new AtpAgent({ service: 'https://bsky.social' })
   await agent.login({ identifier: handle, password })

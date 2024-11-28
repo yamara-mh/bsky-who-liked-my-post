@@ -10,12 +10,10 @@ on:
         options: 
         - develop
         - product
-        
 
 env:
   CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
   CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-
   CLOUDFLARE_WORKER_NAME: ${{ vars.CLOUDFLARE_WORKER_NAME }}
   CLOUDFLARE_WORKER_NAME_DEV: ${{ vars.CLOUDFLARE_WORKER_NAME_DEV }}
 
@@ -32,8 +30,8 @@ jobs:
           else
             WORKER_NAME=${{ env.CLOUDFLARE_WORKER_NAME_DEV }}
           fi
-          set -o pipefail;
-          tmp=$(mktemp);
+          set -o pipefail
+          tmp=$(mktemp)
           curl -f \
               --request GET \
               --url "https://api.cloudflare.com/client/v4/accounts/${{ env.CLOUDFLARE_ACCOUNT_ID }}/workers/subdomain" \
@@ -43,14 +41,21 @@ jobs:
           export CLOUDFLARE_WORKERS_SUBDOMAIN="$(cat $tmp)"
           echo "FEEDGEN_HOSTNAME=$WORKER_NAME.${CLOUDFLARE_WORKERS_SUBDOMAIN}.workers.dev" >> "$GITHUB_ENV"
           
-          TARGET=${{ github.event.inputs.target }}}
-          FEEDGEN_SERVICE_DID=${{ github.env.vars.FEEDGEN_SERVICE_DID }}
-          BLUESKY_HANDLE=${{ github.env.vars.BLUESKY_HANDLE }}
-          BLUESKY_APP_PASSWORD=${{ github.env.secrets.BLUESKY_APP_PASSWORD }}
+          echo "TARGET=$TARGET" >> "$GITHUB_ENV"
+          echo "FEEDGEN_SERVICE_DID=${{ vars.FEEDGEN_SERVICE_DID }}" >> "$GITHUB_ENV"
+          echo "BLUESKY_HANDLE=${{ vars.BLUESKY_HANDLE }}" >> "$GITHUB_ENV"
+          echo "BLUESKY_APP_PASSWORD=${{ secrets.BLUESKY_APP_PASSWORD }}" >> "$GITHUB_ENV"
 
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
       - name: Publish Feed Generators
         run: |
+          echo "Using TARGET: $TARGET"
+          echo "FEEDGEN_SERVICE_DID: $FEEDGEN_SERVICE_DID"
           npm install
           yarn run publishFeed
+        env:
+          TARGET: ${{ github.event.inputs.target }}
+          FEEDGEN_SERVICE_DID: ${{ vars.FEEDGEN_SERVICE_DID }}
+          BLUESKY_HANDLE: ${{ vars.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
