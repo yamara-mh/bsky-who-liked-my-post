@@ -25,7 +25,7 @@ const run = async () => {
   const avatar = isDevelop ? "test.png" : "test.png";
 
   const handle = process.env.BLUESKY_HANDLE as string;
-  const password = process.env.BLUESKY_APP_PASSWORD as string;
+  const password = process.env.BLUESKY_APP_PASSWORD;
   console.log(`handle`);
   console.log(handle);
   console.log(password);
