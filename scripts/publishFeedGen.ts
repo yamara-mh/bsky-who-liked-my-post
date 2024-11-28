@@ -8,9 +8,6 @@ import { ids } from '../src/lexicon/lexicons';
 const run = async () => {
   dotenv.config();
 
-  console.log(`FEEDGEN_SERVICE_DID`);
-  console.log(process.env.FEEDGEN_SERVICE_DID as string);
-
   if (!process.env.FEEDGEN_SERVICE_DID) {
     throw new Error('Please provide a hostname in the .env file');
   }
@@ -43,7 +40,7 @@ const run = async () => {
     } else {
       throw new Error('expected png or jpeg')
     }
-    const img = await fs.readFile(path.join('..', avatar))
+    const img = await fs.readFile(avatar) // path.join('..', avatar)
     const blobRes = await agent.api.com.atproto.repo.uploadBlob(img, {
       encoding,
     })
