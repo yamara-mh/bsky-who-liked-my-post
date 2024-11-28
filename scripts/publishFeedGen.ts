@@ -9,7 +9,6 @@ const run = async () => {
   dotenv.config();
 
   console.log("log");
-  console.log(process.env.FEEDGEN_SERVICE_DID as string);
   
   if (!process.env.FEEDGEN_SERVICE_DID) {
     throw new Error('Please provide a hostname in the .env file');
@@ -27,8 +26,11 @@ const run = async () => {
 
   const handle = process.env.BLUESKY_HANDLE as string;
   const password = process.env.BLUESKY_APP_PASSWORD as string;
+  console.log(`handle {handle}`);
+  console.log(`password {password}`);
+  
   const agent = new AtpAgent({ service: 'https://bsky.social' })
-  await agent.login({ identifier: feedGenDid, password })
+  await agent.login({ identifier: handle, password })
 
   let avatarRef: BlobRef | undefined;
   if (avatar) {
