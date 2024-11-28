@@ -24,8 +24,6 @@ const run = async () => {
 
   const handle = process.env.BLUESKY_HANDLE as string;
   const password = process.env.BLUESKY_APP_PASSWORD as string;
-  console.log(`feedGenDid`);
-  console.log(feedGenDid);
   
   const agent = new AtpAgent({ service: 'https://bsky.social' })
   await agent.login({ identifier: handle, password })
