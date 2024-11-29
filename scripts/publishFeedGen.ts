@@ -15,6 +15,8 @@ const run = async () => {
   const args: string[] = process.argv.slice(2);
   const isDevelop = args[0] === "develop";
 
+  console.log(args[0]);
+
   const feedGenDid = process.env.FEEDGEN_SERVICE_DID as string;
 
   const recordName = isDevelop ? "t" : "who-liked-me";
