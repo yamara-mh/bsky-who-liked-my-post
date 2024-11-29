@@ -12,13 +12,9 @@ const run = async () => {
     throw new Error('Please provide a hostname in the .env file');
   }
 
-  const args: string[] = process.argv.slice(2);
-  const isDevelop = args[0] === "develop";
-
-  console.log(args[0]);
-
   const feedGenDid = process.env.FEEDGEN_SERVICE_DID as string;
 
+  const isDevelop = process.env.TARGET === "develop";
   const recordName = isDevelop ? "t" : "who-liked-me";
   const displayName = isDevelop ? "テスト" : "Who Liked Me";
   const description = isDevelop ? "説明文" : "自身の投稿にいいねした人の投稿を表示します";
