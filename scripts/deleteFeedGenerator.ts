@@ -9,6 +9,7 @@ const run = async () => {
   const password = process.env.BLUESKY_APP_PASSWORD as string
   let recordName = process.env.RECORD_NAME as string
 
+  console.log(feedGenDid);
   console.log(handle);
   
 
