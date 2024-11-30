@@ -22,7 +22,7 @@ jobs:
         env:
           RECORD_NAME: ${{ inputs.record_name }}
         run: |
-          cd feed-generator/
+          cd scripts/
           npm install
           echo ${RECORD_NAME}
           yarn deleteFeedGenerator
