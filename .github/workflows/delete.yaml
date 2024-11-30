@@ -25,4 +25,4 @@ jobs:
           cd scripts/
           npm install
           echo ${RECORD_NAME}
-          yarn run unpublishFeedGen
+          yarn deleteFeedGenerator
