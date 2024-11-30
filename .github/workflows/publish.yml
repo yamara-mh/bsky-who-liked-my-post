@@ -40,12 +40,10 @@ jobs:
           TARGET=${{ github.event.inputs.target }}
           if [ "$TARGET" = "product" ]; then
             WORKER_NAME=${{ env.CLOUDFLARE_WORKER_NAME }}
-            FEEDGEN_HOSTNAME=${{ env.CLOUDFLARE_WORKER_NAME }}
             DB_ID=${{ env.CLOUDFLARE_D1_ID }}
             DB_NAME=${{ env.CLOUDFLARE_D1_NAME }}
           else
             WORKER_NAME=${{ env.CLOUDFLARE_WORKER_NAME_DEV }}
-            FEEDGEN_HOSTNAME=${{ env.CLOUDFLARE_WORKER_NAME_DEV }}
             DB_ID=${{ env.CLOUDFLARE_D1_ID_DEV }}
             DB_NAME=${{ env.CLOUDFLARE_D1_NAME_DEV }}
           fi
