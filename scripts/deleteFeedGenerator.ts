@@ -3,6 +3,8 @@ import { AtpAgent, BlobRef } from '@atproto/api'
 
 const run = async () => {
   dotenv.config()
+
+  const feedGenDid = process.env.FEEDGEN_SERVICE_DID as string;
   const handle = process.env.BLUESKY_HANDLE as string
   const password = process.env.BLUESKY_APP_PASSWORD as string
   let recordName = process.env.RECORD_NAME as string
@@ -36,7 +38,7 @@ const run = async () => {
   }
 
   let record = {
-    repo: did,
+    repo: feedGenDid,
     collection: 'app.bsky.feed.generator',
     rkey: recordName,
   }
