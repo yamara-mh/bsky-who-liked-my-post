@@ -21,6 +21,9 @@ jobs:
       - name: Delete Feed Generator
         env:
           RECORD_NAME: ${{ inputs.record_name }}
+          FEEDGEN_SERVICE_DID: ${{ vars.FEEDGEN_SERVICE_DID }}
+          BLUESKY_HANDLE: ${{ vars.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
         run: |
           cd scripts/
           npm install
