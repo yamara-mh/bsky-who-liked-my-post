@@ -42,6 +42,9 @@ jobs:
           else
             echo "FEEDGEN_HOSTNAME=${{ env.CLOUDFLARE_WORKER_NAME_DEV }}" >> $GITHUB_ENV
           fi
+      - name: Upload FEEDGEN_HOSTNAME as a secret
+        run: |
+          echo "${{ env.FEEDGEN_HOSTNAME }}" | npx wrangler secret put FEEDGEN_HOSTNAME --env=${{ github.event.inputs.target }}
       - name: Populate wrangler.toml
         run: |
           TARGET=${{ github.event.inputs.target }}
@@ -68,14 +71,10 @@ jobs:
           echo "database_id = \"$DB_ID\"" >>wrangler.toml
           echo \[observability\] >>wrangler.toml
           echo enabled = "true" >>wrangler.toml
-      - name: Store Secrets and Deploy
+      - name: Deploy to Cloudflare
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
-          secrets: |
-            BLUESKY_HANDLE
-            BLUESKY_APP_PASSWORD
-            FEEDGEN_HOSTNAME=${{ env.FEEDGEN_HOSTNAME }}
           command: |
             deploy src/server.ts
       - name: Cleanup wrangler.toml
