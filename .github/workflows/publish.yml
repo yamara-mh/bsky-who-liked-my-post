@@ -65,14 +65,15 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
+          env: |
+            if [ "${{ github.event.inputs.target }}" = "product" ]; then
+             FEEDGEN_HOSTNAME=${{ env.CLOUDFLARE_WORKER_NAME }}
+            else
+             FEEDGEN_HOSTNAME=${{ env.CLOUDFLARE_WORKER_NAME_DEV }}
+            fi
           secrets: |
             BLUESKY_HANDLE
             BLUESKY_APP_PASSWORD
-            if [ "${{ github.event.inputs.target }}" = "product" ]; then
-              FEEDGEN_HOSTNAME=${{ env.CLOUDFLARE_WORKER_NAME }}
-            else
-              FEEDGEN_HOSTNAME=${{ env.CLOUDFLARE_WORKER_NAME_DEV }}
-            fi
           command: |
             deploy src/server.ts
       - name: Cleanup wrangler.toml
