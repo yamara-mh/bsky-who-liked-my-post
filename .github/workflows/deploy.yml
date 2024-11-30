@@ -67,7 +67,7 @@ jobs:
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
           secrets: |
             BLUESKY_HANDLE
-            BLUESKY_APP_PASSWORDz
+            BLUESKY_APP_PASSWORD
             TARGET=${{ github.event.inputs.target }}
             if [ "$TARGET" = "product" ]; then
               FEEDGEN_HOSTNAME=${{ env.CLOUDFLARE_WORKER_NAME }}
