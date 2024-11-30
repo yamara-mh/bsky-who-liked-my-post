@@ -3,9 +3,9 @@ import { AtpAgent, BlobRef } from '@atproto/api'
 
 const run = async () => {
   dotenv.config()
-  const handle = process.env.BLUESKY_HANDLE
-  const password = process.env.BLUESKY_APP_PASSWORD
-  let recordName = process.env.RECORD_NAME
+  const handle = process.env.BLUESKY_HANDLE as string
+  const password = process.env.BLUESKY_APP_PASSWORD as string
+  let recordName = process.env.RECORD_NAME as string
 
   console.log(handle);
   
