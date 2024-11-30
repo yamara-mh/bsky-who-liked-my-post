@@ -21,6 +21,7 @@ const run = async () => {
   await agent.login({ identifier: handle, password })
 
   const did = agent.session?.did ?? ''
+  console.log(did);
 
   const checkRecord = {
     feed:'at://' + did + '/app.bsky.feed.generator/' + recordName
