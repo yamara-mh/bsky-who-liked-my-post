@@ -7,6 +7,9 @@ const run = async () => {
   const password = process.env.BLUESKY_APP_PASSWORD
   let recordName = process.env.RECORD_NAME
 
+  console.log(handle);
+  
+
   recordName = recordName.toLowerCase()
 
   if (recordName.length > 15) {
