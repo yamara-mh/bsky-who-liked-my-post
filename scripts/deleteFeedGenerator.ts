@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
 import { AtpAgent, BlobRef } from '@atproto/api'
+import { ids } from '../src/lexicon/lexicons'
 
 const run = async () => {
   dotenv.config()
