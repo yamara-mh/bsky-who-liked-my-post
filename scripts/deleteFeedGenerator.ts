@@ -8,11 +8,7 @@ const run = async () => {
   const feedGenDid = process.env.FEEDGEN_SERVICE_DID as string;
   const handle = process.env.BLUESKY_HANDLE as string
   const password = process.env.BLUESKY_APP_PASSWORD as string
-  let recordName = process.env.RECORD_NAME as string
-
-  console.log(feedGenDid);
-  console.log(handle);
-  
+  let recordName = process.env.RECORD_NAME as string 
 
   recordName = recordName.toLowerCase()
 
@@ -25,11 +21,11 @@ const run = async () => {
   await agent.login({ identifier: handle, password })
 
   const did = agent.session?.did ?? ''
-  console.log(did);
 
   const checkRecord = {
     feed:'at://' + did + '/app.bsky.feed.generator/' + recordName
   }
+  console.log(checkRecord);
 
   try {
     await agent.api.app.bsky.feed.getFeedGenerator(checkRecord)
@@ -39,8 +35,11 @@ const run = async () => {
     )
   }
 
+  console.log();
+  
+
   let record = {
-    repo: feedGenDid,
+    repo: agent.session?.did ?? '',
     collection: ids.AppBskyFeedGenerator,
     rkey: recordName,
   }
