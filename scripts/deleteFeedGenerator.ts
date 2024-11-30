@@ -40,7 +40,7 @@ const run = async () => {
 
   let record = {
     repo: feedGenDid,
-    collection: 'app.bsky.feed.generator',
+    collection: ids.AppBskyFeedGenerator,
     rkey: recordName,
   }
   let recordJSON = JSON.stringify(record, null, 2);
