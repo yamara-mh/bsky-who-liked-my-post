@@ -3,7 +3,6 @@ import inquirer from 'inquirer';
 import { AtpAgent, BlobRef } from '@atproto/api';
 import fs from 'fs/promises';
 import path from 'path';
-import { ids } from '../src/lexicon/lexicons';
 
 const run = async () => {
   dotenv.config();
@@ -15,7 +14,7 @@ const run = async () => {
   const feedGenDid = process.env.FEEDGEN_SERVICE_DID as string;
 
   const isDevelop = process.env.TARGET === "develop";
-  const recordName = isDevelop ? "t" : "who-liked-me";
+  const recordName = isDevelop ? "test2" : "who-liked-me";
   const displayName = isDevelop ? "テスト" : "Who Liked Me";
   const description = isDevelop ? "説明文" : "自身の投稿にいいねした人の投稿を表示します";
   const avatar = isDevelop ? "test.png" : "test.png";
@@ -43,9 +42,11 @@ const run = async () => {
     avatarRef = blobRes.data.blob
   }
 
+  console.log(agent.session?.did as string);
+
   await agent.api.com.atproto.repo.putRecord({
     repo: agent.session?.did ?? '',
-    collection: ids.AppBskyFeedGenerator,
+    collection: 'app.bsky.feed.generator',
     rkey: recordName,
     record: {
       did: feedGenDid,
