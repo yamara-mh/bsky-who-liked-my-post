@@ -39,7 +39,7 @@ jobs:
               --header 'Authorization: Bearer ${{ env.CLOUDFLARE_API_TOKEN }}' \
               | jq -r '.result.subdomain' > $tmp
           export CLOUDFLARE_WORKERS_SUBDOMAIN="$(cat $tmp)"
-          echo "FEEDGEN_HOSTNAME=$WORKER_NAME.${CLOUDFLARE_WORKERS_SUBDOMAIN}.workers.dev" >> "$GITHUB_ENV"
+          echo "FEEDGEN_HOSTNAME=${{ WORKER_NAME }}.${{ CLOUDFLARE_WORKERS_SUBDOMAIN }}.workers.dev" >> "$GITHUB_ENV"
           
           echo "TARGET=$TARGET" >> "$GITHUB_ENV"
           echo "FEEDGEN_SERVICE_DID=${{ vars.FEEDGEN_SERVICE_DID }}" >> "$GITHUB_ENV"
@@ -52,6 +52,7 @@ jobs:
           echo "Using TARGET: $TARGET"
           echo "FEEDGEN_SERVICE_DID: $FEEDGEN_SERVICE_DID"
           npm install
+          env | grep -E 'FEEDGEN'
           yarn run publishFeed
         env:
           TARGET: ${{ github.event.inputs.target }}
