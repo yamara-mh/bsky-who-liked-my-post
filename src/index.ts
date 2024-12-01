@@ -15,7 +15,7 @@ const run = async () => {
   console.log(process.env.FEEDGEN_PUBLISHER_DID as string)
   
   const server = FeedGenerator.create({
-    port: maybeInt(process.env.FEEDGEN_PORT) ?? 3000,
+    port: maybeInt(process.env.FEEDGEN_PORT) ?? 443,
     listenhost: maybeStr(process.env.FEEDGEN_LISTENHOST) ?? '0.0.0.0', // 'localhost',
     sqliteLocation: maybeStr(process.env.FEEDGEN_SQLITE_LOCATION) ?? ':memory:',
     subscriptionEndpoint:
