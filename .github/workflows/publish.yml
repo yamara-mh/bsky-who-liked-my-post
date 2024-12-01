@@ -1,10 +1,7 @@
-name: Deploy to Cloudflare
-run-name: Deploy to Cloudflare
+name: Publish Feed Generators
+run-name: Publish Feed Generators
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
     inputs:
       target:
@@ -15,61 +12,50 @@ on:
         - product
 
 env:
-  BLUESKY_HANDLE: ${{ vars.BLUESKY_HANDLE }}
-  BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
   CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
   CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-
-  CLOUDFLARE_D1_ID: ${{ secrets.CLOUDFLARE_D1_ID }}
-  CLOUDFLARE_D1_NAME: ${{ vars.CLOUDFLARE_D1_NAME }}
   CLOUDFLARE_WORKER_NAME: ${{ vars.CLOUDFLARE_WORKER_NAME }}
-
-  CLOUDFLARE_D1_ID_DEV: ${{ secrets.CLOUDFLARE_D1_ID_DEV }}
-  CLOUDFLARE_D1_NAME_DEV: ${{ vars.CLOUDFLARE_D1_NAME_DEV }}
   CLOUDFLARE_WORKER_NAME_DEV: ${{ vars.CLOUDFLARE_WORKER_NAME_DEV }}
-  
 
 jobs:
-  deploy_cloudflare_worker:
+  publish_feed_generators:
     runs-on: ubuntu-latest
-    name: Deploy Cloudflare Worker
+    name: Publish Feed Generators
     steps:
-      - uses: actions/checkout@v4
-      - name: Populate wrangler.toml
+      - name: Get Cloudflare Worker Subdomain
         run: |
           TARGET=${{ github.event.inputs.target }}
           if [ "$TARGET" = "product" ]; then
             WORKER_NAME=${{ env.CLOUDFLARE_WORKER_NAME }}
-            DB_ID=${{ env.CLOUDFLARE_D1_ID }}
-            DB_NAME=${{ env.CLOUDFLARE_D1_NAME }}
           else
             WORKER_NAME=${{ env.CLOUDFLARE_WORKER_NAME_DEV }}
-            DB_ID=${{ env.CLOUDFLARE_D1_ID_DEV }}
-            DB_NAME=${{ env.CLOUDFLARE_D1_NAME_DEV }}
           fi
-
-          >wrangler.toml
-          echo "name = \"$WORKER_NAME\"" >>wrangler.toml
-          echo compatibility_date = \"2024-09-23\" >>wrangler.toml
-          echo compatibility_flags = \[ \"nodejs_compat\" \] >>wrangler.toml
-          echo \[ build.upload \] >>wrangler.toml
-          echo external = \[ \"linq-to-typescript\" \] >>wrangler.toml
-          echo \[\[ d1_databases \]\] >>wrangler.toml
-          echo binding = \"DB\"  >>wrangler.toml
-          echo preview_database_id = \"DB\"  >>wrangler.toml
-          echo database_name = \"$DB_NAME\" >>wrangler.toml
-          echo "database_id = \"$DB_ID\"" >>wrangler.toml
-          echo \[observability\] >>wrangler.toml
-          echo enabled = "true" >>wrangler.toml
-      - name: Store Secrets and Deploy
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
-          secrets: |
-            BLUESKY_HANDLE
-            BLUESKY_APP_PASSWORD
-          command: |
-            deploy src/server.ts
-      - name: Cleanup wrangler.toml
+          set -o pipefail
+          tmp=$(mktemp)
+          curl -f \
+              --request GET \
+              --url "https://api.cloudflare.com/client/v4/accounts/${{ env.CLOUDFLARE_ACCOUNT_ID }}/workers/subdomain" \
+              --header 'Content-Type: application/json' \
+              --header 'Authorization: Bearer ${{ env.CLOUDFLARE_API_TOKEN }}' \
+              | jq -r '.result.subdomain' > $tmp
+          export CLOUDFLARE_WORKERS_SUBDOMAIN="$(cat $tmp)"
+          echo "FEEDGEN_HOSTNAME=$WORKER_NAME.${CLOUDFLARE_WORKERS_SUBDOMAIN}.workers.dev" >> "$GITHUB_ENV"
+          
+          echo "TARGET=$TARGET" >> "$GITHUB_ENV"
+          echo "FEEDGEN_SERVICE_DID=${{ vars.FEEDGEN_SERVICE_DID }}" >> "$GITHUB_ENV"
+          echo "BLUESKY_HANDLE=${{ vars.BLUESKY_HANDLE }}" >> "$GITHUB_ENV"
+          echo "BLUESKY_APP_PASSWORD=${{ secrets.BLUESKY_APP_PASSWORD }}" >> "$GITHUB_ENV"
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - name: Publish Feed Generators
         run: |
-          rm -f wrangler.toml
+          echo "Using TARGET: $TARGET"
+          echo "FEEDGEN_SERVICE_DID: $FEEDGEN_SERVICE_DID"
+          npm install
+          yarn run publishFeed
+        env:
+          TARGET: ${{ github.event.inputs.target }}
+          FEEDGEN_SERVICE_DID: ${{ vars.FEEDGEN_SERVICE_DID }}
+          BLUESKY_HANDLE: ${{ vars.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}

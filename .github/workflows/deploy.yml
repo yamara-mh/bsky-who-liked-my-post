@@ -39,17 +39,24 @@ jobs:
           if [ "${{ github.event.inputs.target }}" = "product" ]; then
             WORKER_NAME=${{ env.CLOUDFLARE_WORKER_NAME }}
             FEEDGEN_HOSTNAME=${{ env.CLOUDFLARE_WORKER_NAME }}
+            DB_NAME=${{ env.CLOUDFLARE_D1_NAME }}
+            DB_ID=${{ env.CLOUDFLARE_D1_ID }}
           else
             WORKER_NAME=${{ env.CLOUDFLARE_WORKER_NAME_DEV }}
             FEEDGEN_HOSTNAME=${{ env.CLOUDFLARE_WORKER_NAME_DEV }}
+            DB_NAME=${{ env.CLOUDFLARE_D1_NAME_DEV }}
+            DB_ID=${{ env.CLOUDFLARE_D1_ID_DEV }}
           fi
 
           >wrangler.toml
           echo "name = \"$WORKER_NAME\"" >>wrangler.toml
           echo compatibility_date = \"2024-09-23\" >>wrangler.toml
           echo compatibility_flags = \[ \"nodejs_compat\" \] >>wrangler.toml
-          echo \[ build.upload \] >>wrangler.toml
-          echo external = \[ \"linq-to-typescript\" \] >>wrangler.toml
+          echo \[\[ d1_databases \]\] >>wrangler.toml
+          echo binding = \"DB\"  >>wrangler.toml
+          echo preview_database_id = \"DB\"  >>wrangler.toml
+          echo database_name = \"$DB_NAME\" >>wrangler.toml
+          echo "database_id = \"$DB_ID\"" >>wrangler.toml
           echo \[observability\] >>wrangler.toml
           echo enabled = "true" >>wrangler.toml
       - name: Store Secrets and Deploy
