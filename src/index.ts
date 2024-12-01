@@ -16,13 +16,13 @@ const run = async () => {
   
   const server = FeedGenerator.create({
     port: maybeInt(process.env.FEEDGEN_PORT) ?? 3000,
-    listenhost: maybeStr(process.env.FEEDGEN_LISTENHOST) ?? 'localhost',
+    listenhost: maybeStr(process.env.FEEDGEN_LISTENHOST) ?? '0.0.0.0', // 'localhost',
     sqliteLocation: maybeStr(process.env.FEEDGEN_SQLITE_LOCATION) ?? ':memory:',
     subscriptionEndpoint:
       maybeStr(process.env.FEEDGEN_SUBSCRIPTION_ENDPOINT) ??
-      'wss://bsky.network',
+      "did:plc:6hj3b43unydeqry6lqobe4b5",// 'wss://bsky.network',
     publisherDid:
-      maybeStr(process.env.FEEDGEN_PUBLISHER_DID) ?? 'did:example:alice',
+      maybeStr(process.env.FEEDGEN_PUBLISHER_DID) ?? "did:plc:6hj3b43unydeqry6lqobe4b5",// 'did:example:alice',
     subscriptionReconnectDelay:
       maybeInt(process.env.FEEDGEN_SUBSCRIPTION_RECONNECT_DELAY) ?? 3000,
     hostname,
