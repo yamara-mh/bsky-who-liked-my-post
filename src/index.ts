@@ -4,7 +4,7 @@ import FeedGenerator from './server'
 const run = async () => {
   dotenv.config()
   // const hostname = maybeStr(process.env.FEEDGEN_HOSTNAME) ?? 'example.com'
-  const hostname = "https://bsky-who-liked-my-post-dev.yamacarofi.workers.dev";
+  const hostname = "bsky-who-liked-my-post-dev.yamacarofi.workers.dev";
   // (process.env.FEEDGEN_HOSTNAME as string) + ".yamara.workers.dev"
 
   const serviceDid = "did:plc:6hj3b43unydeqry6lqobe4b5"
